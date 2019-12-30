@@ -22,7 +22,7 @@
 
 ## 作者
 
-    [@yuto_o93](https://twitter.com/yuto_o93)
+    [@yuto_o93](https://twitter.com/yuto_o93/)
 
 ## ライセンス
 
