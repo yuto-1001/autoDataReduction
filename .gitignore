@@ -131,3 +131,6 @@ dmypy.json
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 *.ipynb
+
+# tmp files
+*tmp*
