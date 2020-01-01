@@ -8,30 +8,31 @@ import urllib.request as rq
 import magic
 import json
 
-url = input("Enter the URL of image:")
-fileName = "./tmp/tmp"
+def download_tmp_file(url, number) :
+    fileName = './tmp/tmp' + str(number)
+    dicFile = './mimeDic.json'
 
-data = rq.urlopen(url).read()
+    try :
+        data = rq.urlopen(url).read()
+        fileType = magic.from_buffer(data, mime=True)
 
+        with open(dicFile) as dic :
+            mimeDic = json.load(dic)
 
-# In[ ]:
+        extension = mimeDic[fileType]
+        fileName += extension
 
+        with open(fileName, mode='wb') as file :
+            file.write(data)
+        return True
+    
+    except Exception as e :
+        print(e)
+        return False
 
-type = magic.from_buffer(data, mime=True)
-
-with open('./mimeDic.json') as f :
-    mimeDic = json.load(f)
-
-extension = mimeDic[type]
-fileName += extension
-fileName
-
-
-# In[ ]:
-
-
-with open(fileName, mode='wb') as file :
-    file.write(data)
+if __name__ == '__main__' :
+    url = input('Enter the URL of image:')
+    print(download_tmp_file(url, 0))
 
 
 # In[ ]:
