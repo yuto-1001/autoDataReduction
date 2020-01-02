@@ -32,7 +32,7 @@ def download_tmp_file(url, number) :
 
 if __name__ == '__main__' :
     url = input('Enter the URL of image:')
-    print(download_tmp_file(url, 0))
+    print(download_tmp_file(url, 4))
 
 
 # In[ ]:
