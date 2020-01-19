@@ -20,15 +20,9 @@ count = 0
 # In[ ]:
 
 
-def downloadPdf(url, page='all') :
+def downloadTmpPdf(data, page='all') :
     try :
         global count
-        
-        data = rq.urlopen(url).read()
-        fileType = magic.from_buffer(data, mime=True)
-        
-        if fileType != 'application/pdf' :
-            return False
         
         with open('./tmp/pdf_tmp.pdf', mode='wb') as f :
             f.write(data)
@@ -86,7 +80,53 @@ def downloadPdf(url, page='all') :
 # In[ ]:
 
 
+def downloadTmpFile(data, extension) :
+    try :
+        global count
+        
+        fileName = './tmp/tmp' + str(count) + extension
+
+        with open(fileName, mode='wb') as dwldFile:
+            dwldFile.write(data)
+
+        count += 1
+        
+        return True
+        
+    except Exception as e :
+        print(e)
+        return False
+
+
+# In[ ]:
+
+
+def getExtension(data) :
+    mimeType = magic.from_buffer(data, mime=True)
+    with open('mimeDic.json', mode='r') as dic :
+        typeDic = json.load(dic)
+    
+    return typeDic[mimeType]
+
+
+# In[ ]:
+
+
 if __name__ == '__main__' :
     url = input('Enter the URL of image:')
-    print(downloaPdf(url, page='0, -2'))
+    file = rq.urlopen(url).read()
+    extension = getExtension(file)
+    
+    if extension == '.pdf' :
+        downloadTmpPdf(file)
+    
+    else :
+        downloadTmpFile(file, extension)
+    
+
+
+# In[ ]:
+
+
+
 
