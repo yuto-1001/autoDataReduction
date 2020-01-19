@@ -55,12 +55,15 @@ def downloadTmpPdf(data, page='all') :
                     if  type(rngFirst) == int and type(rngEnd) == int :
                         pagesList += range(rngFirst, min(maxPage, rngEnd))
                 
-                elif type(value) == int :
-                    pagesList += min(maxPage, value)
+                else :
+                    print(value)
+                    page = int(value)
+                    pagesList.append(min(maxPage, page))
                 
         with open('./tmp/pdf_tmp.pdf', mode='rb') as pdfData :
             for pageNum in pagesList :
                 fileName = './tmp/tmp' + str(count) + '.pdf'
+                print(fileName)
 
                 merger = PyPDF2.PdfFileMerger()
                 merger.append(pdfData, pages=(pageNum, pageNum + 1))
@@ -85,6 +88,7 @@ def downloadTmpFile(data, extension) :
         global count
         
         fileName = './tmp/tmp' + str(count) + extension
+        print(fileName)
 
         with open(fileName, mode='wb') as dwldFile:
             dwldFile.write(data)
@@ -103,6 +107,7 @@ def downloadTmpFile(data, extension) :
 
 def getExtension(data) :
     mimeType = magic.from_buffer(data, mime=True)
+    print(mimeType)
     with open('mimeDic.json', mode='r') as dic :
         typeDic = json.load(dic)
     
@@ -112,17 +117,27 @@ def getExtension(data) :
 # In[ ]:
 
 
-if __name__ == '__main__' :
-    url = input('Enter the URL of image:')
+def downloadFile(url, pages) :
+    print('url:' + url + '    page:' + pages)
     file = rq.urlopen(url).read()
     extension = getExtension(file)
     
     if extension == '.pdf' :
-        downloadTmpPdf(file)
+        downloadTmpPdf(file, pages)
     
     else :
         downloadTmpFile(file, extension)
+
+
+# In[ ]:
+
+
+if __name__ == '__main__' :
+    with open('downloadUrlList.json', mode='r') as urlList :
+        urlDic = json.load(urlList)
     
+    for i in range(len(urlDic['url'])) :
+        downloadFile(urlDic['url'][i], urlDic['pages'][i])
 
 
 # In[ ]:
