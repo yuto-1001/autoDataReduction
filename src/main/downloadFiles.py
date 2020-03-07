@@ -1,10 +1,24 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
 import urllib.request as rq
 import magic
 import json
 import PyPDF2
 import io
 
+
+# In[ ]:
+
+
 count = 0
+
+
+# In[ ]:
+
 
 def downloadTmpPdf(data, page='all') :
     try :
@@ -65,6 +79,10 @@ def downloadTmpPdf(data, page='all') :
         print(e)
         return False 
 
+
+# In[ ]:
+
+
 def downloadTmpFile(data, extension) :
     try :
         global count
@@ -83,6 +101,10 @@ def downloadTmpFile(data, extension) :
         print(e)
         return False
 
+
+# In[ ]:
+
+
 def getExtension(data) :
     mimeType = magic.from_buffer(data, mime=True)
     print(mimeType)
@@ -94,13 +116,17 @@ def getExtension(data) :
     
     return False
 
+
+# In[ ]:
+
+
 def downloadFile(url, pages) :
     print('url:' + url + '    page:' + pages)
     file = rq.urlopen(url).read()
     extension = getExtension(file)
     
     if not extension :
-        print("This file can't download this System!")
+        print('This file can\'t download this System!')
         return False
     
     elif extension == '.pdf' :
@@ -109,11 +135,20 @@ def downloadFile(url, pages) :
     else :
         downloadTmpFile(file, extension)
 
+
+# In[ ]:
+
+
 if __name__ == '__main__' :
     with open('downloadUrlList.json', mode='r') as urlList :
         urlDic = json.load(urlList)
     
     for i in range(len(urlDic['url'])) :
         downloadFile(urlDic['url'][i], urlDic['pages'][i])
+
+
+# In[ ]:
+
+
 
 

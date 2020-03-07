@@ -24,24 +24,27 @@ def convertPdf(fileName) :
 # In[ ]:
 
 
-filePath = './tmp/tmp*'
-fileLists = sorted(glob.glob(filePath))
+def organizeTmpData(fileList) :
+    for fileName in fileList :
+        print(fileName)
+        with open(fileName, mode='rb') as f :
+            binary = f.read()
+
+        mimeType = magic.from_buffer(binary, mime=True)
+
+        if mimeType == 'application/pdf' :
+            print('pdf')
+            convertPdf(fileName)
+            print('compleate!')
 
 
 # In[ ]:
 
 
-for fileName in fileLists :
-    print(fileName)
-    with open(fileName, mode='rb') as f :
-        binary = f.read()
-    
-    mimeType = magic.from_buffer(binary, mime=True)
-    
-    if mimeType == 'application/pdf' :
-        print('pdf')
-        convertPdf(fileName)
-        print('compleate!')
+filePath = './tmp/tmp*'
+fileList = sorted(glob.glob(filePath))
+
+organizeTmpData(fileList)
 
 
 # In[ ]:
